@@ -1,0 +1,15 @@
+#!/usr/bin/expect -f
+
+log_user 0
+set timeout 120
+lassign $argv app_id
+spawn steamcmd +login anonymous +app_info_print "$app_id"
+match_max 100000
+expect -re "AppID : ${app_id}.*?\r?\n" {
+  send -- "\r"
+  expect -re "((?!\r?\n).*?)\r?\nSteam>" {
+    puts [regsub -all {\x1b\[[0-9;]*[a-zA-Z]|\r} "$expect_out(1,string)" ""]
+    send -- "quit\r"
+    expect eof
+  }
+}

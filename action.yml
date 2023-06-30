@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+
+name: "Get Steam app info"
+description: "Fetches info about a Steam app"
+
+outputs:
+  app-info:
+    description: "The Steam app info, JSON-encoded."
+
+inputs:
+  app-id:
+    description: "The Steam app id"
+    required: true
+
+runs:
+  using: docker
+  image: ./Dockerfile
+  args:
+    - ${{ inputs.app-id }}
